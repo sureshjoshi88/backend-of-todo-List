@@ -12,6 +12,9 @@ const todo = [
   {
     id: 3,
     text: 'hello my first todo'
+  },{
+    id:4,
+    text:"this is a todo app"
   }
 ]
 
@@ -72,11 +75,11 @@ const server = http.createServer((req, res) => {
     try {
       const id = parseInt(req.url.split('/')[2]);
 
-      const todoIndex = todo.findIndex((i)=>i.id===id)
-      if(todoIndex!==-1){
-        todo.splice(todoIndex,1);
+      const todoIndex = todo.findIndex((i) => i.id === id)
+      if (todoIndex !== -1) {
+        todo.splice(todoIndex, 1);
         res.writeHead(200, { 'content-type': 'application/json' })
-        res.end(JSON.stringify({ message: 'todo was successfull delete', todo :todo }))
+        res.end(JSON.stringify({ message: 'todo was successfull delete', todo: todo }))
       }
 
     } catch (error) {
