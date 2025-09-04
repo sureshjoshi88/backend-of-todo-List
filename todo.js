@@ -46,7 +46,6 @@ const server = http.createServer((req, res) => {
 
       }
     })
-
   } else if (req.url === `/update/${id}` && req.method === "PUT") {
     let body = '';
     req.on('data', chunk => {
@@ -64,36 +63,28 @@ const server = http.createServer((req, res) => {
           res.writeHead(404, { 'content-type': 'application/json' })
           res.end(JSON.stringify({ error: "Todo not found" }))
         }
-
       } catch (error) {
         res.writeHead(400, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "Invalid JSON data" }));
       }
     })
   } else if (req.url === `/delete/${id}` && req.method === 'DELETE') {
-
     try {
       const id = parseInt(req.url.split('/')[2]);
-
       const todoIndex = todo.findIndex((i) => i.id === id)
       if (todoIndex !== -1) {
         todo.splice(todoIndex, 1);
         res.writeHead(200, { 'content-type': 'application/json' })
         res.end(JSON.stringify({ message: 'todo was successfull delete', todo: todo }))
       }
-
     } catch (error) {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "please try again" }));
     }
-
   }
-
   else {
     res.writeHead(404, { 'content-type': 'plain/text' })
     res.end(JSON.stringify({ error: "route not found" }))
-
-
   }
 })
 
@@ -103,4 +94,3 @@ server.listen(3002, () => {
 })
 
 
-////////
