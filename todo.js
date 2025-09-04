@@ -58,29 +58,19 @@ if(index!==-1){
 }
 
 })
-  else if (req.url === `/update/${id}` && req.method === "PUT") {
-    let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    })
-    req.on('end', () => {
-      try {
-        const updatedata = JSON.parse(body)
-        const index = todo.findIndex((i) => i.id === id)
-        if (index !== -1) {
-          todo[index].text = updatedata.text || todo[index].text
-          res.writeHead(200, { 'content-type': 'application/json' })
-          res.end(JSON.stringify({ message: 'todo was successfull update', todo: todo[index] }))
-        } else {
-          res.writeHead(404, { 'content-type': 'application/json' })
-          res.end(JSON.stringify({ error: "Todo not found" }))
-        }
-      } catch (error) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Invalid JSON data" }));
-      }
-    })
-  } else if (req.url === `/delete/${id}` && req.method === 'DELETE') {
+
+app.delete('/delete/:id',(req,res)=>{
+  const id = req.body.id;
+  const todoindex = todo.findIndex((v)=>v.id===id)
+  if(todoindex!==-1){
+    todo.splice(todoindex,1);
+    res.status(200).send({ message: "todo was successfully deleted", todo });
+  }else{
+        res.status(404).send({ error: "Todo not found" })
+
+  }
+})
+ else if (req.url === `/delete/${id}` && req.method === 'DELETE') {
     try {
       const id = parseInt(req.url.split('/')[2]);
       const todoIndex = todo.findIndex((i) => i.id === id)
