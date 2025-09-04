@@ -1,4 +1,4 @@
-const http = require('http')
+const express = require('express')
 
 const todo = [
   {
@@ -18,9 +18,15 @@ const todo = [
   }
 ]
 
-const server = http.createServer((req, res) => {
-  const id = parseInt(req.url.split('/')[2]);
+const app = express()
+app.use(express.json())
 
+app.get('/',(req,res)=>{
+  res.status(200).send("the main page is todolist")
+})
+app.get("/todos",(req,res)=>{
+  res.status(200).send(todo)
+})
   if (req.url === '/') {
     res.writeHead(200, { 'Content-Type': 'plain/text' })
     res.end("hello the main page is avaible")
@@ -86,7 +92,6 @@ const server = http.createServer((req, res) => {
     res.writeHead(404, { 'content-type': 'plain/text' })
     res.end(JSON.stringify({ error: "route not found" }))
   }
-})
 
 server.listen(3002, () => {
   console.log(`the server is running http://localhost:3002`);
