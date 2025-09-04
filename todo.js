@@ -27,11 +27,21 @@ app.get('/',(req,res)=>{
 app.get("/todos",(req,res)=>{
   res.status(200).send(todo)
 })
-  if (req.url === '/') {
-    res.writeHead(200, { 'Content-Type': 'plain/text' })
-    res.end("hello the main page is avaible")
 
-  } else if (req.url === '/todos') {
+app.post('/addtodo',(req,res)=>{
+  try {
+    const newTodo = req.body;
+    if(!newTodo.text){
+      res.status(400).send({error:"text field is required"})
+    }
+    newTodo.id = todo.length+1;
+    todo.push(newTodo)
+    res.status(201).send({message:'todo successfully added',todo:newTodo})
+  } catch (error) {
+    
+  }
+})
+   else if (req.url === '/todos') {
     res.writeHead(200, { "Content-Type": 'application/json' })
     res.end(JSON.stringify(todo))
   } else if (req.url === '/addtodo' && req.method === "POST") {
@@ -93,7 +103,7 @@ app.get("/todos",(req,res)=>{
     res.end(JSON.stringify({ error: "route not found" }))
   }
 
-server.listen(3002, () => {
+app.listen(3002, () => {
   console.log(`the server is running http://localhost:3002`);
 
 })
