@@ -38,31 +38,27 @@ app.post('/addtodo',(req,res)=>{
     todo.push(newTodo)
     res.status(201).send({message:'todo successfully added',todo:newTodo})
   } catch (error) {
-    
+    res.status(400).send({ error: "Invalid JSON data please try again" })
   }
 })
-   else if (req.url === '/todos') {
-    res.writeHead(200, { "Content-Type": 'application/json' })
-    res.end(JSON.stringify(todo))
-  } else if (req.url === '/addtodo' && req.method === "POST") {
-    let body = ''
-    req.on('data', chunk => {
-      body += chunk.toString();
-    })
-    req.on('end', () => {
-      try {
-        const newTodo = JSON.parse(body)
-        newTodo.id = todo.length + 1
-        todo.push(newTodo)
-        res.writeHead(200, { 'content-type': 'application/json' })
-        res.end(JSON.stringify({ message: 'todo successfully added', todo: newTodo }))
-      } catch (error) {
-        res.writeHead(400, { 'content-type': 'application/json' })
-        res.end(JSON.stringify({ error: "Invalid json data please try again" }))
 
-      }
-    })
-  } else if (req.url === `/update/${id}` && req.method === "PUT") {
+app.put('/update/:id',(req,res)=>{
+const id = parseInt(req.body.id);
+const updatetodo = req.body
+const index = todo.findIndex((d)=>d.id===id)
+if(index!==-1){
+  todo[index].text = updatetodo.text  || todo[index].text
+  res.status(200).send({
+      message: "todo was successfully updated",
+      todo: todo[index],
+    });
+}else{
+      res.status(404).send({ error: "Todo not found" })
+
+}
+
+})
+  else if (req.url === `/update/${id}` && req.method === "PUT") {
     let body = '';
     req.on('data', chunk => {
       body += chunk.toString();
