@@ -23,14 +23,14 @@ app.get('/', (req, res) => {
   res.status(200).send("the main page is todolist")
 })
 app.get("/todos", (req, res) => {
-  res.status(200).send(todo)
+  res.status(200).json({status:true,message:"success",todo})
 })
 
 app.post('/addtodo', (req, res) => {
   try {
     const newTodo = req.body;
     if (!newTodo.text) {
-      return res.status(400).send({ error: "text field is required" })
+      return res.status(400).json({ error: "text field is required" })
     }
     newTodo.id = todo.length + 1;
     todo.push(newTodo)
