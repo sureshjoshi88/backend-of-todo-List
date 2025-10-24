@@ -12,10 +12,8 @@ const todo = [
   {
     id: 3,
     text: 'hello good morning everyone'
-  }, {
-    id: 4,
-    text: "this is a todo app"
   }
+
 ]
 
 const app = express()
